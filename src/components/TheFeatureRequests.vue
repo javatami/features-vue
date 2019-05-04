@@ -2,7 +2,7 @@
   <div>
          <v-tabs
                 v-model="tab"
-                color="cyan"
+                color="dark blue"
                 align-with-title
         >
           <v-tabs-slider color="yellow"></v-tabs-slider>
