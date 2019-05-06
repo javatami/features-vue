@@ -21,10 +21,5 @@ export default {
   components: {
     Home,
   },
-  data() {
-    return {
-      //
-    }
-  }
-}
+};
 </script>
