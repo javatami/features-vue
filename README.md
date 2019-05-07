@@ -24,6 +24,8 @@ This project is being developed in concert with the Spring Boot back end to be f
 - Pagination
 - Integration Tests
 - Accessibility
+- Containerize
+
 ## Project setup
 ```
 npm install

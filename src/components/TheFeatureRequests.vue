@@ -6,8 +6,14 @@
       py-5
       px-5
     >
-      <v-layout>
+      <v-layout  align-center>
+        <v-btn color="primary"
+               round
+               dark
+               align-center
+               @click="dialog=true">Add New Client Request</v-btn>
         <v-flex>
+          <br />
       <v-card>
         <v-card-text>
           <v-tabs fixed-tabs>
@@ -29,6 +35,14 @@
       </v-tab-item>
     </v-tabs-items>
       </v-card>
+          <v-dialog v-model="dialog" persistent max-width="500px" @close="dialog = false;">
+            <v-card>
+              <v-card-text>
+                <AddFeatureRequest isVisible="showDialog"></AddFeatureRequest>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+
         </v-flex>
       </v-layout>
     </v-container>
@@ -38,29 +52,48 @@
 
 <script>
 
-import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
 import RequestsByClient from './RequestsByClient.vue';
+import AddFeatureRequest from './AddFeatureRequest.vue';
+import { fetchClients, fetchFeatureRequests } from '../api/featureRequest';
 
 export default {
   name: 'TheFeatureRequests',
-  components: { RequestsByClient },
+  components: { AddFeatureRequest, RequestsByClient },
   data() {
     return {
       tab: null,
       clientName: 'Client A',
       clientRequests: [],
+      dialog: false,
       tabNames: [
-        'By Client', 'By Priority',
+        'By Client', 'By Priority', 'By Product Area',
       ],
     };
   },
-  mounted() {
-    axios
-      .get('http://localhost:8081/requests')
-      .then((response) => {
-        this.clientRequests = response.data;
-      })
-      .catch(error => console.log(error));
+  computed: {
+    ...mapGetters([
+      'clients',
+      'featureRequests',
+    ]),
+  },
+  methods: {
+    ...mapActions([
+      'setClients',
+      'setFeatureRequests',
+    ]),
+  },
+  async mounted() {
+    try {
+      this.setClients(await fetchClients());
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      this.setFeatureRequests(await fetchFeatureRequests());
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 </script>
