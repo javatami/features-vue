@@ -1,14 +1,16 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import axios from 'axios';
-import store from './store';
+import Vuex from 'vuex';
+import { store } from './store/store';
 import App from './App.vue';
 import router from './router';
 import 'vuetify/dist/vuetify.min.css';
 
+
 Vue.config.productionTip = false;
 Vue.use(Vuetify);
-Vue.use(axios);
+Vue.use(Vuex);
+
 Vue.use(store);
 
 new Vue({

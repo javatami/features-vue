@@ -8,9 +8,13 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-select solo v-model="this.clients" label="Client" required></v-select>
+                <v-select
+                  :items="clientNames"
+                  label="Please choose a Client"
+                  solo
+                  v-model="clientName"
+                ></v-select>
               </v-flex>
-
               <v-flex xs12>
                 <v-text-field solo label="Feature Title" required
                 hint="Title for the feature request"></v-text-field>
@@ -25,7 +29,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="this.$emit('close')">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="this.emit('close', {})">Close</v-btn>
           <v-btn color="blue darken-1" flat @click="this.saveRequest()">Save and Prioritize</v-btn>
         </v-card-actions>
       </v-card>
@@ -41,6 +45,7 @@ export default {
   data() {
     return {
       clients: [],
+      clientName: '',
     };
   },
   methods: {

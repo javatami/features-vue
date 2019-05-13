@@ -1,18 +1,30 @@
 <template>
   <div class="root">
-    <SlickList lockAxis="y" v-model="currentClient.features">
-      <SlickItem class="padded a-list-item" v-for="(feature) in currentClient.features"
+    <v-flex xs12 sm6 d-flex>
+      <v-select
+        :items="clientNames"
+        label="Clients"
+        solo
+        v-model="currentClient"
+        @change="getCurrentClientFeatures()"
+      ></v-select>
+    </v-flex>
+    <v-flex xs12 sm6 d-flex>
+    <SlickList lockAxis="y" v-model="currentClientFeatures">
+      <SlickItem class="padded a-list-item" v-for="(feature) in currentClientFeatures"
                  :index="feature.priority"
                  :key="feature.priority">
         <div class="padded">{{ feature.title }}</div>
         <v-spacer></v-spacer>
       </SlickItem>
     </SlickList>
+    </v-flex>
   </div>
 </template>
 <script>
 
 import { SlickList, SlickItem } from 'vue-slicksort';
+import { mapGetters } from 'vuex';
 
 
 export default {
@@ -23,54 +35,24 @@ export default {
   },
   data() {
     return {
-      currentClient: {
-        name: 'Client A',
-        features: [
-          {
-            title: 'Feature Title #1 for Client A',
-            description: 'Feature Description #1 for Client A',
-            priority: 1,
-          },
-          {
-            title: 'Feature Title #2 for Client A',
-            description: 'Feature Description #2 for Client A',
-            priority: 2,
-          },
-        ],
-      },
-      clients: [
-        {
-          name: 'Client A',
-          features: [
-            {
-              title: 'Feature Title #1 for Client A',
-              description: 'Feature Description #1 for Client A',
-              priority: 1,
-            },
-            {
-              title: 'Feature Title #2 for Client A',
-              description: 'Feature Description #2 for Client A',
-              priority: 2,
-            },
-          ],
-        },
-        {
-          name: 'Client B',
-          features: [
-            {
-              title: 'Feature Title #1 for Client B',
-              description: 'Feature Description #1 for Client B',
-              priority: 1,
-            },
-            {
-              title: 'Feature Title #2 for Client B',
-              description: 'Feature Description #2 for Client B',
-              priority: 2,
-            },
-          ],
-        },
-      ],
+      currentClient: '',
+      clientChosen: false,
+      currentClientFeatures: [],
     };
+  },
+  methods: {
+    getCurrentClientFeatures() {
+      this.clientChosen = true;
+      this.currentClientFeatures = this.featuresByClientName(this.currentClient);
+    },
+  },
+  computed: {
+    ...mapGetters([
+      'clients',
+      'clientNames',
+      'featureRequests',
+      'featuresByClientName',
+    ]),
   },
 };
 
